@@ -10,12 +10,11 @@ class Cli {
                 name: 'selectAction',
                 message: 'What would you like to do?',
                 choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department',
-                    'Add a role', 'Add an employee', 'Update an employee role']
+                    'Add a role', 'Add an employee', 'Update an employee role', 'Exit']
             }]
         )
             .then(answers => {
                 console.log(answers);
-                DB.test();
             })
     }
 }

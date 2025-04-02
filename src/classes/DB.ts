@@ -12,10 +12,5 @@ const pool = new Pool({
 });
 
 export default class DB {
-    static test() {
-        console.log("Test!");
-    }
-    static viewDepartments() {
-        
-    }
+
 }
