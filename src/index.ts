@@ -1,4 +1,4 @@
-import inquirer from "inquirer";
+import DB from './classes/DB.js'
 import Cli from './classes/Cli.js'
 
 // TODO: When the application is started, present the user with the following options:

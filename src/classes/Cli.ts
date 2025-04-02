@@ -4,6 +4,7 @@ import DB from './DB.js';
 // define the cli class
 class Cli {
     static start() {
+        DB.connectToDb()
         inquirer.prompt(
             [{
                 type: 'list',
@@ -14,7 +15,7 @@ class Cli {
             }]
         )
             .then(answers => {
-                console.log(answers);
+                // when the user selects an action, call the appropriate function
             })
     }
 }
