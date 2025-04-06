@@ -18,11 +18,11 @@ export default class DB {
           await pool.connect();
         } catch (err) {
           console.error('Error connecting to database:', err);
-          process.exit(1);
         }
     }
-    // define generic private method to query the database
-      static async queryDb(query: string): Promise<any> {
+
+    // define generic method to query the database
+    private static async queryDb(query: string): Promise<any> {
         try {
             this.connectToDb();
             const res = await pool.query(query);
@@ -32,6 +32,7 @@ export default class DB {
             throw err;
         }
     }
+
     // define method to view all departments
     static async viewDepartments(): Promise<void> {
         try {
@@ -41,6 +42,7 @@ export default class DB {
             console.error('Error viewing departments:', err);
         }
     }
+
     // define method to view all roles
     static async viewRoles(): Promise<void> {
       try {
@@ -50,6 +52,8 @@ export default class DB {
           console.error('Error viewing roles:', err);
       }
     }
+
+    // define method to view all employees
     static async viewEmployees(): Promise<void> {
         try {
             const employees = await this.queryDb('SELECT * FROM employee');
@@ -58,6 +62,35 @@ export default class DB {
             console.error('Error viewing employees:', err);
         }
     }
+
+    // define method to create a department
+    static async createDepartment(name: string): Promise<void> {
+        try {
+            await this.queryDb(`INSERT INTO department (name) VALUES ('${name}')`);
+        } catch (err) {
+            console.error('Error creating department:', err);
+        }
+    }
+
+    //define method to create a role
+    static async createRole(title: string, salary: number, departmentId: number): Promise<void> {
+        try {
+            await this.queryDb(`INSERT INTO role (title, salary, department_id) VALUES ('${title}', ${salary}, ${departmentId})`);
+        } catch (err) {
+            console.error('Error creating role:', err);
+        }
+    }
+
+    // define method to create an employee
+    static async createEmployee(firstName: string, lastName: string, roleId: number, managerId: number): Promise<void> {
+        try {
+            await this.queryDb(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${firstName}', '${lastName}', ${roleId}, ${managerId})`);
+        } catch (err) {
+            console.error('Error creating employee:', err);
+        }
+    }
+
+    // define method to view employee names
     static async viewEmployeeNames(): Promise<void> {
         try {
             const employeeNames = await this.queryDb('SELECT employee.id, employee.first_name, employee.last_name, role.title FROM employee inner join role on employee.role_id = role.id');
@@ -71,7 +104,9 @@ export default class DB {
         } catch (err) {
             console.error('Error viewing employee names:', err);
         }
-      }
+    }
+    
+    // define method to view role names
     static async viewRoleNames(): Promise<void> {
         try {
             const roleNames = await this.queryDb('SELECT * FROM role');
@@ -87,14 +122,13 @@ export default class DB {
             console.error('Error viewing role names:', err);
         }
     }
-      
-    // define method to create a department
-    // static async createDepartment(name: string): Promise<void> {
-    //     try {
-    //         await this.queryDb(`INSERT INTO department (name) VALUES ('${name}')`);
-    //         console.log(`Department ${name} created.`);
-    //     } catch (err) {
-    //         console.error('Error creating department:', err);
-    //     }
-    // }
+
+    // define method to update an employee's role
+    static async updateEmployeeRole(employeeId: string, roleId: number): Promise<void> {
+        try {
+            await this.queryDb(`UPDATE employee SET role_id = ${roleId} WHERE id = ${employeeId}`);
+        } catch (err) {
+            console.error('Error updating employee role:', err);
+        }
+    }
 }
