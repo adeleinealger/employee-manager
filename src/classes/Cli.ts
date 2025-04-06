@@ -40,6 +40,7 @@ class Cli {
                         }
                         )
                 } else if (answers.selectAction === 'Add a role') {
+                    const departments = await DB.viewDepartmentNames();
                     inquirer.prompt(
                         [{
                             type: 'input',
@@ -58,21 +59,23 @@ class Cli {
                             )
                                 .then(answers => {
                                     const roleSalary = answers.roleSalary;
+                                    if (Array.isArray(departments)) {
                                     inquirer.prompt(
                                         [{
-                                            type: 'input',
+                                            type: 'list',
                                             name: 'roleDepartmentId',
-                                            message: 'What is the department id of the role?'
+                                            message: 'Which department does this role belong to?',
+                                            choices: [...departments]
                                         }]
                                     )
                                         .then(async (answers) => {
-                                            const roleDepartmentId = answers.roleDepartmentId;
+                                            const roleDepartmentId = answers.roleDepartmentId.split(':')[0];
                                             await DB.createRole(roleName, roleSalary, roleDepartmentId);
                                             console.log(`Role ${roleName} created.`);
                                             Cli.start();
                                         })
                                 }
-                                )
+                        })
                         })
                 } else if (answers.selectAction === 'Add an employee') {
                     const employees = await DB.viewEmployeeNames();

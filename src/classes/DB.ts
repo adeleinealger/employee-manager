@@ -123,6 +123,22 @@ export default class DB {
         }
     }
 
+    // define method to view department names
+    static async viewDepartmentNames(): Promise<void> {
+        try {
+            const departmentNames = await this.queryDb('SELECT * FROM department');
+            // map the department names to an array
+            const departmentNamesArray = departmentNames.map(
+                (department: { id: number; name: string }) => {
+                    return `${department.id}: ${department.name}`;
+                }
+            );
+            return departmentNamesArray;
+        } catch (err) {
+            console.error('Error viewing department names:', err);
+        }
+    }
+
     // define method to update an employee's role
     static async updateEmployeeRole(employeeId: string, roleId: number): Promise<void> {
         try {
