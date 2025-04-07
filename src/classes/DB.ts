@@ -44,9 +44,9 @@ export default class DB {
     }
 
     // define method to view all roles
-    static async viewRoles(): Promise<void> {
+    static async viewRoles(): Promise<any> {
       try {
-          const roles = await this.queryDb('SELECT * FROM role');
+          const roles = await this.queryDb('SELECT role.id, role.title, role.salary, department.name as department FROM role inner join department on role.department_id = department.id');
           return roles;
       } catch (err) {
           console.error('Error viewing roles:', err);
@@ -56,7 +56,7 @@ export default class DB {
     // define method to view all employees
     static async viewEmployees(): Promise<void> {
         try {
-            const employees = await this.queryDb('SELECT * FROM employee');
+            const employees = await this.queryDb('SELECT employee.id, employee.first_name || \' \' || employee.last_name as employee_name, role.title as role, employee2.first_name || \' \' || employee2.last_name as manager FROM employee inner join role on employee.role_id = role.id left join employee employee2 on employee.manager_id = employee2.id');
             return employees;
         } catch (err) {
             console.error('Error viewing employees:', err);

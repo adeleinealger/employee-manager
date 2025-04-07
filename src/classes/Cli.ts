@@ -116,11 +116,17 @@ class Cli {
                                                     type: 'list',
                                                     name: 'employeeManagerId',
                                                     message: 'Who is the manager of this employee?',
-                                                    choices: [...employees]
+                                                    choices: [...employees, 'None']
                                                 }]
                                             )
                                                 .then(async (answers) => {
-                                                    const employeeManagerId = answers.employeeManagerId.split(':')[0];
+                                                    let employeeManagerId;
+                                                    if (answers.employeeManagerId === 'None') {
+                                                        employeeManagerId = null;
+                                                    }
+                                                    else {
+                                                        employeeManagerId = answers.employeeManagerId.split(':')[0];
+                                                    }
                                                     await DB.createEmployee(employeeFirstName, employeeLastName, employeeRoleId, employeeManagerId);
                                                     console.log(`Employee ${employeeFirstName} ${employeeLastName} created.`);
                                                     Cli.start();
