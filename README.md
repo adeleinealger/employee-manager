@@ -18,3 +18,5 @@ npm start
 ## Usage
 
 Select an option from the list and follow the inquirer prompts
+
+Video walkthrough: https://drive.google.com/drive/folders/1sxEGE-FHMw0ct1V5iVI0dUu3ufB0oG4g?usp=sharing
